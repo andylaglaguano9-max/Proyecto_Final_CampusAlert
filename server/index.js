@@ -36,6 +36,9 @@ app.get('/api/health', (req, res) => {
 
 app.post('/api/register', async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password) {
+  return res.status(400).json({ error: 'Usuario y contraseña son requeridos' });
+}
   try {
     const [existingUsers] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
     if (existingUsers.length > 0) {
@@ -59,6 +62,9 @@ app.post('/api/register', async (req, res) => {
 
 app.post('/api/login', async (req, res) => {
   const { username, password } = req.body;
+  if (!username || !password) {
+  return res.status(400).json({ error: 'Usuario y contraseña son requeridos' });
+}
   try {
     const [users] = await pool.query('SELECT * FROM users WHERE username = ?', [username]);
     if (users.length === 0) {
