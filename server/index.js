@@ -9,9 +9,11 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 3001;
 
+// Middleware
 app.use(cors());
 app.use(express.json());
 
+// Ajustes iniciales para evitar errores de CORS
 const pool = mysql.createPool({
   host: process.env.DB_HOST || 'localhost',
   user: process.env.DB_USER || 'root',
@@ -72,6 +74,42 @@ app.post('/api/login', async (req, res) => {
   } catch (error) {
     console.error('Error en login:', error);
     res.status(500).json({ error: 'Error al iniciar sesión' });
+  }
+});
+
+// =======================
+// RUTAS DE CÁLCULOS
+// =======================
+
+app.get('/api/calculos', async (req, res) => {
+  const userId = req.query.user_id;
+  try {
+    let rows;
+    if (userId) {
+      [rows] = await pool.query('SELECT * FROM calculations WHERE user_id = ? ORDER BY date DESC', [userId]);
+    } else {
+      [rows] = await pool.query('SELECT * FROM calculations ORDER BY date DESC');
+    }
+    res.json(rows);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Error al obtener el historial de cálculos' });
+  }
+});
+
+app.post('/api/calculos', async (req, res) => {
+  const { user_id, kwh, gallons, gas = 0, waste = 0, flights = 0, total_emissions, trees_needed, date } = req.body;
+  try {
+    const [result] = await pool.query(
+      'INSERT INTO calculations (user_id, kwh, gallons, gas, waste, flights, total_emissions, trees_needed, date) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)',
+      [user_id || null, kwh, gallons, gas, waste, flights, total_emissions, trees_needed, date]
+    );
+    
+    const [newRow] = await pool.query('SELECT * FROM calculations WHERE id = ?', [result.insertId]);
+    res.status(201).json(newRow[0]);
+  } catch (error) {
+    console.error('Error inserting data:', error);
+    res.status(500).json({ error: 'Error al guardar el cálculo en la base de datos' });
   }
 });
 
