@@ -72,4 +72,3 @@ Se necesitan dos terminales corriendo simultáneamente:
 ## Integrantes del Equipo
 
 - **Andy Laglaguano**
-- **Esteban Larco**
