@@ -1,22 +1,22 @@
-# 🏫 CampusAlert
+# CampusAlert
 
 **CampusAlert** es una plataforma moderna para el reporte de incidentes y daños en infraestructura universitaria (como laboratorios, aulas y pasillos). El sistema permite a estudiantes y profesores reportar daños en tiempo real (con fotos, ubicación GPS y descripciones), y utiliza **Inteligencia Artificial (Gemini)** para analizar la urgencia del reporte.
 
 ---
 
-## ✨ Características Principales
+## Características Principales
 
-- 📸 **Captura de Evidencias:** Permite tomar fotos directamente desde la cámara web o subir imágenes del dispositivo.
-- 📍 **Geolocalización:** Ubica automáticamente el incidente usando el GPS del usuario para mostrar coordenadas exactas.
-- 🤖 **Análisis por IA:** Integración con Google Gemini para evaluar los reportes, asignar prioridades automáticas y resumir el problema para el equipo de mantenimiento.
-- 📶 **Modo Offline:** Aplicación Web Progresiva (PWA). Si el usuario no tiene internet en el campus, el reporte se guarda localmente en IndexedDB y se sincroniza automáticamente al recuperar la conexión.
-- 💬 **Asistente Virtual (Chatbot):** Un bot impulsado por IA para resolver dudas frecuentes y ayudar a los usuarios.
-- 📊 **Panel de Administración (Dashboard):** Vista exclusiva para administradores donde pueden ver estadísticas en vivo, atender incidentes y generar reportes de auditoría.
-- 🔒 **Seguridad y Auditoría:** Autenticación con JWT, Google Login y un registro de logs inmutable para cumplir con estándares ISO.
+- Captura de Evidencias: Permite tomar fotos directamente desde la cámara web o subir imágenes del dispositivo.
+- Geolocalización: Ubica automáticamente el incidente usando el GPS del usuario para mostrar coordenadas exactas.
+- Análisis por IA: Integración con Google Gemini para evaluar los reportes, asignar prioridades automáticas y resumir el problema para el equipo de mantenimiento.
+- Modo Offline: Aplicación Web Progresiva (PWA). Si el usuario no tiene internet en el campus, el reporte se guarda localmente en IndexedDB y se sincroniza automáticamente al recuperar la conexión.
+- Asistente Virtual (Chatbot): Un bot impulsado por IA para resolver dudas frecuentes y ayudar a los usuarios.
+- Panel de Administración (Dashboard): Vista exclusiva para administradores donde pueden ver estadísticas en vivo, atender incidentes y generar reportes de auditoría.
+- Seguridad y Auditoría: Autenticación con JWT, Google Login y un registro de logs inmutable para cumplir con estándares ISO.
 
 ---
 
-## 🛠️ Tecnologías Usadas
+## Tecnologías Usadas
 
 **Frontend:**
 - React 18 con Vite
@@ -33,7 +33,7 @@
 
 ---
 
-## 🚀 Instrucciones para desarrollo local
+## Instrucciones para desarrollo local
 
 ### 1. Clonar e Instalar
 Clona este repositorio en tu máquina y luego instala las dependencias:
@@ -69,7 +69,7 @@ Se necesitan dos terminales corriendo simultáneamente:
 
 ---
 
-## 👥 Integrantes del Equipo
+## Integrantes del Equipo
 
 - **Andy Laglaguano**
 - **Esteban Larco**
