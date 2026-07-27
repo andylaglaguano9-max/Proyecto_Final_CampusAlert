@@ -53,8 +53,8 @@ export default function Dashboard() {
     }
   };
 
-  const fetchIncidents = async () => {
-    setLoading(true);
+  const fetchIncidents = async (isFirstLoad = false) => {
+    if (isFirstLoad) setLoading(true);
     try {
       const token = localStorage.getItem('token');
       const res = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:3001'}/api/incidents`, {
@@ -64,13 +64,13 @@ export default function Dashboard() {
     } catch (err) {
       toast.error('Error de conexión. ¿Está encendido MySQL y el Backend?', { id: 'db-error' });
     } finally {
-      setLoading(false);
+      if (isFirstLoad) setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchIncidents();
-    const interval = setInterval(fetchIncidents, 15000);
+    fetchIncidents(true);
+    const interval = setInterval(() => fetchIncidents(false), 15000);
     return () => clearInterval(interval);
   }, []);
 

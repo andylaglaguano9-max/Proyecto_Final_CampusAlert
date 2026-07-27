@@ -41,6 +41,8 @@ function App() {
         const user = JSON.parse(userStr);
         setUserRole(user.role);
       } catch (e) {}
+    } else {
+      setUserRole('student');
     }
 
     // Axios Interceptor para manejar tokens expirados (401)
@@ -82,7 +84,7 @@ function App() {
       window.removeEventListener('online', handleOnline);
       axios.interceptors.response.eject(interceptor);
     };
-  }, []);
+  }, [isAuthenticated]);
 
   return (
     <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || "YOUR_GOOGLE_CLIENT_ID_HERE"}>
