@@ -1,0 +1,20 @@
+{
+  "name": "CampusAlert AI",
+  "short_name": "CampusAlert",
+  "description": "Plataforma para el reporte y gestión inteligente de incidentes en el campus",
+  "display": "standalone",
+  "theme_color": "#ffffff",
+  "background_color": "#ffffff",
+  "icons": [
+    {
+      "src": "/logo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "/logo.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ]
+}

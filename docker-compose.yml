@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: campusalert
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./server/campusalert.sql:/docker-entrypoint-initdb.d/init.sql
+
+  backend:
+    build: ./server
+    ports:
+      - "3001:3001"
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=campusalert
+      - DB_PORT=5433
+      - PORT=3001
+      - JWT_SECRET=super_secret_campusalert_key_123
+      # GEMINI_API_KEY pasará desde el .env de la raíz o lo definimos manualmente
+    env_file:
+      - ./server/.env
+    depends_on:
+      - db
+
+  frontend:
+    build: .
+    ports:
+      - "4173:4173"
+    depends_on:
+      - backend
+
+volumes:
+  pgdata:

@@ -1,79 +1,21 @@
-/* Variables globales de paleta de colores premium orgánicos */
-:root {
-  /* Paleta Premium Orgánica (Earthy Premium) */
-  --primary-color: #2b4c3b;
-  --primary-hover: #1e3629;
-  --secondary-color: #c98a4b;
-  --background-color: #f4f1eb;
-  --text-color: #2c2c2c;
-  --text-light: #6a6a6a;
-  --surface-color: rgba(255, 255, 255, 0.85);
-  --error-color: #d9534f;
-  --success-color: #4caf50;
-  --border-radius: 20px;
-  --glass-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
-  --glass-border: 1px solid rgba(255, 255, 255, 0.6);
+@import "tailwindcss";
+
+@theme {
+  --color-brand-500: #3b82f6;
+  --color-brand-600: #2563eb;
 }
 
-/* Reseteo general de márgenes y paddings del modelo de caja */
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+@layer base {
+  body {
+    @apply bg-[#030712] text-white min-h-screen font-sans antialiased;
+    background-image: 
+      radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+      radial-gradient(at 50% 0%, hsla(225,39%,30%,0.2) 0, transparent 50%), 
+      radial-gradient(at 100% 0%, hsla(339,49%,30%,0.1) 0, transparent 50%);
+    background-attachment: fixed;
+  }
 }
 
-/* Estilos base del cuerpo del documento y tipografía general */
-body {
-  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  line-height: 1.6;
-  min-height: 100vh;
-  position: relative;
-  overflow-x: hidden;
-}
-
-body::before {
-  content: '';
-  position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: 
-    radial-gradient(circle at 50% 50%, rgba(201, 138, 75, 0.08), transparent 50%), 
-    radial-gradient(circle at 80% 20%, rgba(43, 76, 59, 0.12), transparent 40%);
-  animation: bgSpin 40s linear infinite;
-  z-index: -1;
-  pointer-events: none;
-}
-
-@keyframes bgSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
-}
-
-a {
-  text-decoration: none;
-  color: var(--primary-color);
-}
-
-button {
-  cursor: pointer;
-  font-family: inherit;
-}
-
-h1, h2, h3 {
-  font-weight: 700;
-  line-height: 1.2;
-}
-
-/* Efecto visual de cristal esmerilado para paneles contenedores */
 .glass-panel {
-  background: var(--surface-color);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-radius: var(--border-radius);
-  border: var(--glass-border);
-  box-shadow: var(--glass-shadow);
+  @apply bg-slate-900/40 backdrop-blur-xl border border-slate-700/50 shadow-2xl;
 }
