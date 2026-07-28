@@ -11,10 +11,10 @@ services:
       - "5433:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
-      - ./server/campusalert.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./backend/campusalert.sql:/docker-entrypoint-initdb.d/init.sql
 
   backend:
-    build: ./server
+    build: ./backend
     ports:
       - "3001:3001"
     environment:
@@ -27,12 +27,12 @@ services:
       - JWT_SECRET=super_secret_campusalert_key_123
       # GEMINI_API_KEY pasará desde el .env de la raíz o lo definimos manualmente
     env_file:
-      - ./server/.env
+      - ./backend/.env
     depends_on:
       - db
 
   frontend:
-    build: .
+    build: ./client
     ports:
       - "4173:4173"
     depends_on:

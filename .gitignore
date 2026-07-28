@@ -1,11 +1,10 @@
 node_modules/
-dist/
-dist-ssr/
-*.local
-.env
-.env.*
-server/.env
-server/node_modules/
+frontend/node_modules/
+backend/node_modules/
+frontend/dist/
+frontend/dev-dist/
+frontend/.env
+backend/.env
 *.log
 .vscode/
 .DS_Store
