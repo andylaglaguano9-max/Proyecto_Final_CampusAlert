@@ -45,11 +45,14 @@ function App() {
       setUserRole('student');
     }
 
-    // Axios Interceptor para manejar tokens expirados (401)
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
-        if (error.response && error.response.status === 401) {
+        // Ignorar 401 si viene de las rutas de login para no reiniciar la página entera
+        const url = error.config?.url || '';
+        const isAuthRoute = url.includes('/login') || url.includes('/auth/google') || url.includes('/register');
+        
+        if (error.response && error.response.status === 401 && !isAuthRoute) {
           localStorage.removeItem('token');
           localStorage.removeItem('user');
           setIsAuthenticated(false);

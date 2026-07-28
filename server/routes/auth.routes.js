@@ -147,7 +147,7 @@ router.post('/auth/google', async (req, res) => {
     res.json({ token, role: user.role, user: { id: user.id, full_name: user.full_name, email: user.email, role: user.role, profile_picture: user.profile_picture } });
   } catch (err) {
     console.error('Google Auth error', err);
-    res.status(401).json({ error: 'Autenticación con Google fallida' });
+    res.status(401).json({ error: 'Autenticación fallida: ' + err.message });
   }
 });
 
