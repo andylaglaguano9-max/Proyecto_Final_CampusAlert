@@ -1,8 +1,12 @@
-import { AlertTriangle, Clock, CheckCircle2, ShieldQuestion, Play, Trash2, CheckSquare, Edit3, User, Sparkles, Building, MapPin } from 'lucide-react';
+import { useState } from 'react';
+import { createPortal } from 'react-dom';
+import { AlertTriangle, Clock, CheckCircle2, ShieldQuestion, Play, Trash2, CheckSquare, Edit3, User, Building, MapPin, Maximize, X } from 'lucide-react';
 import clsx from 'clsx';
 import { motion } from 'framer-motion';
 
 export default function IncidentCard({ incident, index, userRole, currentUserId, onUpdateStatus, onResolveStart, onDelete, onEdit }) {
+  const [showDetails, setShowDetails] = useState(false);
+
   const getPriorityConfig = (priority) => {
     switch (priority) {
       case 'critical': return { color: 'text-rose-400 bg-rose-500/20 border-rose-500/30 shadow-[0_0_10px_rgba(244,63,94,0.3)]', label: 'Crítica', icon: AlertTriangle };
@@ -137,6 +141,14 @@ export default function IncidentCard({ incident, index, userRole, currentUserId,
         
         {/* Acciones */}
         <div className="mt-5 flex flex-wrap gap-3 justify-end">
+          <button 
+            onClick={() => setShowDetails(true)}
+            className="flex items-center gap-2 text-xs font-bold px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-cyan-400 border border-slate-700 hover:border-cyan-500/50 rounded-lg transition-colors hover:shadow-[0_0_15px_rgba(6,182,212,0.2)] active:scale-95"
+          >
+            <Maximize className="w-3.5 h-3.5" />
+            Detalles
+          </button>
+
           {canEdit && (
              <button 
                onClick={() => onEdit(incident.id, incident.description)}
@@ -182,6 +194,93 @@ export default function IncidentCard({ incident, index, userRole, currentUserId,
           )}
         </div>
       </div>
+
+      {showDetails && createPortal(
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+          <motion.div 
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+            className="absolute inset-0 bg-black/80 backdrop-blur-sm" 
+            onClick={() => setShowDetails(false)}
+          />
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95, y: 20 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+            className="relative bg-slate-900 border border-slate-700/80 rounded-2xl w-full max-w-5xl max-h-[90vh] overflow-y-auto shadow-2xl flex flex-col md:flex-row"
+          >
+            <button 
+              onClick={() => setShowDetails(false)}
+              className="absolute top-4 right-4 z-50 p-2 bg-slate-900/50 hover:bg-red-500 text-white rounded-full transition-colors backdrop-blur-md"
+            >
+              <X className="w-5 h-5" />
+            </button>
+            
+            {/* Foto Completa */}
+            {incident.image_data && (
+              <div className="w-full md:w-1/2 bg-black min-h-[300px] md:min-h-full flex items-center justify-center">
+                <img src={incident.image_data} alt="Evidencia Completa" className="w-full h-full object-contain" />
+              </div>
+            )}
+
+            {/* Detalles */}
+            <div className={`w-full p-6 sm:p-8 ${incident.image_data ? 'md:w-1/2' : ''} flex flex-col gap-6`}>
+              <div>
+                <div className="flex flex-wrap gap-3 mb-4">
+                  <span className={clsx("px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border", Priority.color)}>
+                    <Priority.icon className="w-3.5 h-3.5" />
+                    {Priority.label}
+                  </span>
+                  <span className={clsx("px-3 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 border border-slate-700/50 bg-slate-800/50", Status.color)}>
+                    <Status.icon className="w-3.5 h-3.5" />
+                    {Status.label}
+                  </span>
+                </div>
+                <h3 className="text-xl font-bold text-white mb-2">Descripción del Incidente</h3>
+                <p className="text-slate-300 whitespace-pre-wrap leading-relaxed">{incident.description}</p>
+              </div>
+
+              {incident.ai_analysis && (
+                <div className="bg-gradient-to-r from-blue-900/30 to-cyan-900/10 border border-cyan-500/20 rounded-xl p-5 shadow-inner">
+                  <h4 className="text-sm text-cyan-400 font-bold mb-3 flex items-center gap-2">
+                    ✨ Análisis de Inteligencia Artificial
+                  </h4>
+                  <p className="text-sm text-slate-300 leading-relaxed font-light">{incident.ai_analysis}</p>
+                </div>
+              )}
+
+              <div className="bg-slate-800/30 border border-slate-700/50 rounded-xl p-5 flex flex-col gap-4 text-sm text-slate-400">
+                <div className="flex items-center gap-3">
+                  <User className="w-4 h-4 text-blue-400" />
+                  <span className="font-semibold text-slate-200">Reportado por:</span>
+                  <span className="text-slate-300">{incident.reporter_name || 'Estudiante'}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <Clock className="w-4 h-4 text-yellow-400" />
+                  <span className="font-semibold text-slate-200">Fecha y Hora:</span>
+                  <span className="text-slate-300">
+                    {new Date(incident.created_at).toLocaleDateString()} - {new Date(incident.created_at).toLocaleTimeString()}
+                  </span>
+                </div>
+                {incident.location_text && (
+                  <div className="flex items-center gap-3">
+                    <Building className="w-4 h-4 text-slate-300" />
+                    <span className="font-semibold text-slate-200">Ubicación:</span>
+                    <span className="text-slate-300">{incident.location_text}</span>
+                  </div>
+                )}
+              </div>
+
+              {incident.status === 'resolved' && incident.resolution_comment && (
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-xl p-5 text-sm">
+                  <h4 className="font-bold text-emerald-400 mb-2 flex items-center gap-2">
+                    <CheckCircle2 className="w-4 h-4" /> Resolución Final
+                  </h4>
+                  <p className="text-emerald-200/90">{incident.resolution_comment}</p>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </div>,
+        document.body
+      )}
     </motion.div>
   );
 }
