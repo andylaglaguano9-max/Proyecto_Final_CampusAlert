@@ -51,6 +51,18 @@ router.post('/register', async (req, res) => {
     return res.status(400).json({ error: 'Todos los campos son obligatorios' });
   }
 
+  if (!username.endsWith('@espe.edu.ec')) {
+    return res.status(400).json({ error: 'Acceso denegado. Solo se admiten cuentas institucionales de la ESPE (@espe.edu.ec).' });
+  }
+
+  if (password.length < 6) {
+    return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres.' });
+  }
+
+  if (full_name.trim().length < 3) {
+    return res.status(400).json({ error: 'El nombre completo debe ser válido.' });
+  }
+
   try {
     // Verificar si el usuario ya existe
     const existingUser = await pool.query('SELECT id FROM users WHERE email = $1', [username]);
@@ -121,6 +133,10 @@ router.post('/auth/google', async (req, res) => {
     });
     const payload = ticket.getPayload();
     const { email, name, sub: google_id, picture } = payload;
+
+    if (!email.endsWith('@espe.edu.ec')) {
+      return res.status(403).json({ error: 'Acceso denegado. Solo se admiten cuentas institucionales de la ESPE (@espe.edu.ec).' });
+    }
 
     // Buscar si el usuario ya existe
     const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);

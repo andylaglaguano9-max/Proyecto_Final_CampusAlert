@@ -73,7 +73,7 @@ export default function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 50, scale: 0.9 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="fixed bottom-6 right-6 w-96 h-[500px] max-h-[80vh] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl z-50 border border-slate-700"
+            className="fixed bottom-4 right-4 left-4 sm:left-auto sm:bottom-6 sm:right-6 sm:w-96 h-[500px] max-h-[80vh] glass-panel rounded-2xl flex flex-col overflow-hidden shadow-2xl z-50 border border-slate-700"
           >
             {/* Header */}
             <div className="bg-slate-800/80 p-4 border-b border-slate-700 flex justify-between items-center backdrop-blur-md">
